@@ -1,5 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { CSVProcessor } from './csvProcessor';
+// Using shared utilities directly
+const { CSVProcessingEngine } = require('../../../src/utils/csvProcessor');
+const { FileValidator, ThresholdValidator } = require('../../../src/utils/validation');
 import { AWSServices } from './awsServices';
 import { LambdaResponse, UploadResponse, ErrorResponse } from './types';
 
@@ -36,11 +38,11 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     const { fileContent, fileName, fileSize, threshold } = parseMultipartFormData(event);
 
     // Validate inputs
-    CSVProcessor.validateCSVFile(fileName, fileSize);
-    CSVProcessor.validateThreshold(threshold);
+    FileValidator.validateFile({ name: fileName, size: fileSize } as any);
+    ThresholdValidator.validateThreshold(threshold);
 
     // Process CSV content
-    const processedData = CSVProcessor.processCSVContent(fileContent, threshold);
+    const processedData = CSVProcessingEngine.processCSVContent(fileContent, threshold);
 
     // Initialize AWS services
     const awsServices = new AWSServices();

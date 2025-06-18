@@ -16,7 +16,7 @@ A modern, stunning Next.js application for uploading and analyzing CSV files wit
 
 ## 🛠️ Technology Stack
 
-- **Framework**: Next.js 14 (App Router)
+- **Framework**: Next.js 15.3.3 (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
 - **Icons**: Heroicons & Lucide React
@@ -168,12 +168,6 @@ To deploy this application:
    npm start
    ```
 
-3. **Deploy to your preferred platform**:
-   - Vercel (recommended for Next.js)
-   - Netlify
-   - AWS
-   - Docker container
-
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -213,4 +207,4 @@ csv-upload-app/
 
 ---
 
-Built with ❤️ by DevMentor for Portland General Electric Assessment
+Built with ❤️ by Amr Metwaly for Portland General Electric Assessment

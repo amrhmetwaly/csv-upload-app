@@ -1,0 +1,38 @@
+# AWS Infrastructure (separate from frontend)
+aws-infrastructure/
+aws-infrastructure/**/*
+
+# Scripts directory (deployment scripts, not frontend)
+scripts/
+
+# Documentation files
+*.md
+!README.md
+
+# Test files and coverage
+**/__tests__/
+**/coverage/
+jest.config.js
+jest.setup.js
+
+# Environment and config files not needed for frontend
+.env.local
+.env.*.local
+
+# Build artifacts
+.next/
+out/
+dist/
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# IDE files
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db 

@@ -1,0 +1,134 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'CSV Upload Application - API Gateway, Lambda, S3, DynamoDB'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: 'dev'
+    AllowedValues: ['dev', 'staging', 'prod']
+    Description: 'Deployment environment'
+  
+  CorsOrigin:
+    Type: String
+    Default: '*'
+    Description: 'CORS origin for API Gateway'
+
+Globals:
+  Function:
+    Timeout: 30
+    Runtime: nodejs20.x
+    MemorySize: 512
+    Environment:
+      Variables:
+        NODE_ENV: !Ref Environment
+
+Resources:
+  # S3 Bucket for CSV file storage
+  CSVUploadBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'csv-upload-${Environment}-${AWS::AccountId}'
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteOldFiles
+            Status: Enabled
+            ExpirationInDays: 30
+
+  # DynamoDB table for metadata storage
+  CSVMetadataTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub 'csv-uploads-${Environment}'
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: uploadedAt
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: UploadedAtIndex
+          KeySchema:
+            - AttributeName: uploadedAt
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Service
+          Value: csv-upload-app
+
+  # Lambda function for CSV processing
+  CSVProcessorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'csv-processor-${Environment}'
+      CodeUri: ../lambda/
+      Handler: dist/index.handler
+      Description: 'Processes CSV uploads and stores metadata'
+      Environment:
+        Variables:
+          DYNAMODB_TABLE_NAME: !Ref CSVMetadataTable
+          S3_BUCKET_NAME: !Ref CSVUploadBucket
+      Policies:
+        - DynamoDBWritePolicy:
+            TableName: !Ref CSVMetadataTable
+        - DynamoDBReadPolicy:
+            TableName: !Ref CSVMetadataTable
+        - S3WritePolicy:
+            BucketName: !Ref CSVUploadBucket
+        - S3ReadPolicy:
+            BucketName: !Ref CSVUploadBucket
+      Events:
+        UploadApi:
+          Type: Api
+          Properties:
+            Path: /energy/upload
+            Method: POST
+
+
+
+
+
+
+
+  # CloudWatch Log Group
+  CSVProcessorLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/csv-processor-${Environment}'
+      RetentionInDays: 14
+
+Outputs:
+  LambdaFunctionArn:
+    Description: 'Lambda function ARN'
+    Value: !GetAtt CSVProcessorFunction.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-LambdaArn'
+
+  S3BucketName:
+    Description: 'S3 bucket name for CSV storage'
+    Value: !Ref CSVUploadBucket
+    Export:
+      Name: !Sub '${AWS::StackName}-BucketName'
+
+  DynamoDBTableName:
+    Description: 'DynamoDB table name for metadata'
+    Value: !Ref CSVMetadataTable
+    Export:
+      Name: !Sub '${AWS::StackName}-TableName' 

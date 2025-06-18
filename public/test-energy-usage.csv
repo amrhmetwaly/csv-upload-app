@@ -1,0 +1,26 @@
+Customer ID,Name,Usage (kWh),Billing Month,Rate Plan,Location
+001,John Smith,1250.5,2024-01,Residential,Portland
+002,Sarah Johnson,890.2,2024-01,Residential,Beaverton
+003,ABC Manufacturing Corp,4500.0,2024-01,Commercial,Tigard
+004,Mike Wilson,675.8,2024-01,Residential,Lake Oswego
+005,Tech Solutions LLC,8750.3,2024-01,Industrial,Hillsboro
+006,Maria Garcia,1100.7,2024-01,Residential,Gresham
+007,Green Energy Co,15500.0,2024-01,Industrial,Portland
+008,Lisa Chen,520.4,2024-01,Residential,Milwaukie
+009,Northwest Retail,3200.5,2024-01,Commercial,Oregon City
+010,David Brown,945.6,2024-01,Residential,Tualatin
+011,Emma Davis,2100.3,2024-02,Residential,Beaverton
+012,Industrial Metals Inc,22000.0,2024-02,Industrial,Portland
+013,Coffee Shop Downtown,1850.7,2024-02,Commercial,Portland
+014,Robert Taylor,780.9,2024-02,Residential,Tigard
+015,Healthcare Center,6750.2,2024-02,Commercial,Lake Oswego
+016,Jennifer Wilson,1420.8,2024-02,Residential,Gresham
+017,Mega Factory Ltd,35000.5,2024-02,Industrial,Hillsboro
+018,Small Office,950.3,2024-02,Commercial,Milwaukie
+019,Senior Living Complex,8900.4,2024-02,Commercial,Oregon City
+020,Tom Anderson,650.7,2024-02,Residential,Tualatin
+021,University Campus,18500.0,2024-03,Educational,Portland
+022,Alice White,1075.2,2024-03,Residential,Beaverton
+023,Data Center,45000.0,2024-03,Industrial,Hillsboro
+024,Local Restaurant,2750.6,2024-03,Commercial,Portland
+025,James Miller,825.4,2024-03,Residential,Tigard 

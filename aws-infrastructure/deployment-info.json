@@ -1,0 +1,10 @@
+{
+  "environment": "dev",
+  "region": "us-west-2",
+  "stackName": "csv-analyzer",
+  "apiUrl": "",
+  "uploadEndpoint": "",
+  "s3Bucket": "csv-upload-dev-230232161228",
+  "dynamodbTable": "csv-uploads-dev",
+  "deployedAt": "2025-06-17T23:11:09Z"
+}

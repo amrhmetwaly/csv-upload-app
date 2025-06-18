@@ -1,0 +1,11 @@
+Customer ID,Name,Usage (kWh),Billing Month,Rate Plan,Location
+001,John Smith,1250.5,2024-01,Residential,Portland
+002,Sarah Johnson,890.2,2024-01,Residential,Beaverton
+003,ABC Corp,4500.0,2024-01,Commercial,Tigard
+004,Mike Wilson,675.8,2024-01,Residential,Lake Oswego
+005,Tech Solutions LLC,8750.3,2024-01,Industrial,Hillsboro
+006,Maria Garcia,1100.7,2024-01,Residential,Gresham
+007,Green Energy Co,12500.0,2024-01,Industrial,Portland
+008,Lisa Chen,520.4,2024-01,Residential,Milwaukie
+009,Northwest Retail,3200.5,2024-01,Commercial,Oregon City
+010,David Brown,945.6,2024-01,Residential,Tualatin 

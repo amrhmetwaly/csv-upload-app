@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { DocumentTextIcon } from '@heroicons/react/24/outline';
 import { Info } from 'lucide-react';
 import Image from 'next/image';
@@ -11,6 +11,8 @@ import { FileUpload } from '../components/FileUpload';
 import { ProcessingResults } from '../components/ProcessingResults';
 
 export default function Home() {
+  const resultsRef = useRef<HTMLDivElement>(null);
+  
   const {
     file,
     threshold,
@@ -26,6 +28,19 @@ export default function Home() {
     handleSubmit,
     clearResults
   } = useFileUpload();
+
+  // Auto-scroll to results when processing is complete
+  useEffect(() => {
+    if (processingResult && resultsRef.current) {
+      // Small delay to ensure the component is fully rendered
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
+      }, 100);
+    }
+  }, [processingResult]);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -125,7 +140,9 @@ export default function Home() {
           </div>
 
           {/* Processing Results */}
-          <ProcessingResults data={processingResult} onClear={clearResults} />
+          <div ref={resultsRef}>
+            <ProcessingResults data={processingResult} onClear={clearResults} />
+          </div>
 
           {/* Additional Information */}
           <div className="mt-8 text-center">

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
-import { AlertMessage, UploadResponse, ProcessedData, FileUploadData, ErrorCode } from '../types/shared';
-import { FileValidator, ThresholdValidator, ValidationError, createDetailedError } from '../utils/validation';
+import { AlertMessage, UploadResponse, ProcessedData, FileUploadData } from '../types/shared';
+import { FileValidator, ThresholdValidator, createDetailedError } from '../utils/validation';
 import { getApiEndpoint } from '../config/env';
 
 interface UseFileUploadReturn {
@@ -13,7 +13,7 @@ interface UseFileUploadReturn {
   setFile: (file: File | null) => void;
   setThreshold: (threshold: string) => void;
   setDragActive: (active: boolean) => void;
-  addAlert: (type: AlertMessage['type'], message: string, code?: ErrorCode) => void;
+  addAlert: (type: AlertMessage['type'], message: string) => void;
   removeAlert: (alert: AlertMessage) => void;
   clearAlerts: () => void;
   handleFileSelect: (file: File) => void;
@@ -29,7 +29,7 @@ export const useFileUpload = (): UseFileUploadReturn => {
   const [processingResult, setProcessingResult] = useState<(ProcessedData & FileUploadData) | null>(null);
   const [dragActive, setDragActive] = useState(false);
 
-  const addAlert = useCallback((type: AlertMessage['type'], message: string, code?: ErrorCode) => {
+  const addAlert = useCallback((type: AlertMessage['type'], message: string) => {
     const newAlert: AlertMessage = { 
       type, 
       message, 
@@ -73,7 +73,7 @@ export const useFileUpload = (): UseFileUploadReturn => {
       return true;
     } catch (error) {
       const errorDetails = createDetailedError(error);
-      addAlert('error', errorDetails.message, errorDetails.code as ErrorCode);
+      addAlert('error', errorDetails.message);
       return false;
     }
   }, [file, threshold, clearAlerts, addAlert]);
@@ -85,7 +85,7 @@ export const useFileUpload = (): UseFileUploadReturn => {
       addAlert('info', `File "${selectedFile.name}" selected successfully!`);
     } catch (error) {
       const errorDetails = createDetailedError(error);
-      addAlert('error', errorDetails.message, errorDetails.code as ErrorCode);
+      addAlert('error', errorDetails.message);
       setFile(null);
     }
   }, [addAlert]);
@@ -122,12 +122,12 @@ export const useFileUpload = (): UseFileUploadReturn => {
         setThreshold('');
       } else {
         const errorResult = result as unknown as { error: string; code?: string };
-        addAlert('error', errorResult.error || 'An error occurred while processing your request.', errorResult.code as ErrorCode);
+        addAlert('error', errorResult.error || 'An error occurred while processing your request.');
         setProcessingResult(null);
       }
     } catch (error) {
       const errorDetails = createDetailedError(error);
-      addAlert('error', 'Failed to connect to the server. Please try again.', 'NETWORK_ERROR' as ErrorCode);
+      addAlert('error', 'Failed to connect to the server. Please try again.');
       console.error('Upload error:', errorDetails);
     } finally {
       setIsLoading(false);

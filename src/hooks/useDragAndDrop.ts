@@ -41,7 +41,7 @@ export const useDragAndDrop = ({
       try {
         FileValidator.validateFileType(file.name);
         onFileSelect(file);
-      } catch (error) {
+      } catch {
         onError('Please drop a CSV file only.');
       }
     }

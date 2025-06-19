@@ -99,8 +99,8 @@ export default function Home() {
                     id="threshold"
                     value={threshold}
                     onChange={(e) => setThreshold(e.target.value)}
-                    placeholder="Enter numeric threshold (e.g., 100)"
-                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all duration-200 text-lg"
+                    placeholder="Enter threshold (e.g., 100)"
+                    className="w-full px-4 py-4 pr-16 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all duration-200 text-lg"
                     min="0"
                     step="0.01"
                   />
